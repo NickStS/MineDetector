@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- DJI Official Colors -->
+    <color name="dji_blue">#0971CE</color>
+    <color name="dji_blue_dark">#065A9E</color>
+    <color name="dji_vibrant_blue">#00B5E2</color>
+    <color name="dji_dark_blue">#001D35</color>
+    <color name="dji_black">#141414</color>
+    <color name="dji_white">#FFFFFF</color>
+    <color name="dji_silver_grey">#A0A5A5</color>
+    <color name="dji_titan_grey">#5E6262</color>
+
+    <!-- Background Colors -->
+    <color name="dji_background">#141414</color>
+    <color name="dji_card">#1E1E1E</color>
+    <color name="dji_card_semi">#CC1E1E1E</color>
+
+    <!-- Primary Colors -->
+    <color name="primary">#0971CE</color>
+    <color name="primary_dark">#001D35</color>
+    <color name="primary_light">#00B5E2</color>
+    <color name="accent">#00B5E2</color>
+    <color name="accent_blue">#0971CE</color>
+
+    <!-- Background Colors -->
+    <color name="background_dark">#141414</color>
+    <color name="background_card">#1E1E1E</color>
+    <color name="background_surface">#252C36</color>
+
+    <!-- Text Colors -->
+    <color name="text_primary">#FFFFFF</color>
+    <color name="text_secondary">#A0A5A5</color>
+    <color name="text_tertiary">#5E6262</color>
+
+    <!-- White variations -->
+    <color name="white">#FFFFFF</color>
+    <color name="white_90">#E6FFFFFF</color>
+    <color name="white_70">#B3FFFFFF</color>
+    <color name="white_50">#80FFFFFF</color>
+
+    <!-- Status Colors -->
+    <color name="success">#4CAF50</color>
+    <color name="warning">#FF9800</color>
+    <color name="error">#F44336</color>
+    <color name="info">#0971CE</color>
+
+    <!-- Connection Status Colors -->
+    <color name="status_connected">#4CAF50</color>
+    <color name="status_disconnected">#F44336</color>
+
+    <!-- Gradient Colors -->
+    <color name="gradient_blue_start">#0971CE</color>
+    <color name="gradient_blue_end">#001D35</color>
+
+    <color name="gradient_green_start">#43A047</color>
+    <color name="gradient_green_end">#2E7D32</color>
+
+    <color name="gradient_purple_start">#8E24AA</color>
+    <color name="gradient_purple_end">#6A1B9A</color>
+
+    <color name="gradient_orange_start">#FB8C00</color>
+    <color name="gradient_orange_end">#EF6C00</color>
+
+    <!-- Transparent overlays -->
+    <color name="black_overlay">#80000000</color>
+    <color name="blue_overlay">#800971CE</color>
+
+    <!-- Additional colors -->
+    <color name="black">#000000</color>
+    <color name="overlay_dark">#B3000000</color>
+    <color name="transparent">#00000000</color>
+
+    <!-- Legacy (keep for compatibility) -->
+    <color name="colorPrimary">#0971CE</color>
+    <color name="colorPrimaryDark">#001D35</color>
+    <color name="colorAccent">#00B5E2</color>
+</resources>

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Foreground layer for adaptive launcher icon (Android 8.0+).
+  Viewport: 108×108dp  |  All elements scaled ×0.85 from centre (54,54)
+  to keep outer ring within the 72dp "safe zone" (max radius 36dp from centre).
+  Outer ring edge: 54 + 29.6 + 1.9 = 85.5dp  ✓ (< 90dp safe boundary)
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Outer ring  r=29.6  sw=3.8  #C8BAA0 -->
+    <path
+        android:pathData="M 24.4,54 a 29.6,29.6 0 1 0 59.2,0 a 29.6,29.6 0 1 0 -59.2,0"
+        android:fillColor="#00000000"
+        android:strokeColor="#C8BAA0"
+        android:strokeWidth="3.8" />
+
+    <!-- Middle ring  r=19.7  sw=2.0  #C8BAA0 at 35% opacity -->
+    <path
+        android:pathData="M 34.3,54 a 19.7,19.7 0 1 0 39.4,0 a 19.7,19.7 0 1 0 -39.4,0"
+        android:fillColor="#00000000"
+        android:strokeColor="#59C8BAA0"
+        android:strokeWidth="2.0" />
+
+    <!-- Crosshair — top -->
+    <path
+        android:pathData="M 54,21.4 L 54,41.3"
+        android:fillColor="#00000000"
+        android:strokeColor="#C8BAA0"
+        android:strokeWidth="3.8"
+        android:strokeLineCap="butt" />
+
+    <!-- Crosshair — bottom -->
+    <path
+        android:pathData="M 54,66.8 L 54,86.6"
+        android:fillColor="#00000000"
+        android:strokeColor="#C8BAA0"
+        android:strokeWidth="3.8"
+        android:strokeLineCap="butt" />
+
+    <!-- Crosshair — left -->
+    <path
+        android:pathData="M 21.4,54 L 41.3,54"
+        android:fillColor="#00000000"
+        android:strokeColor="#C8BAA0"
+        android:strokeWidth="3.8"
+        android:strokeLineCap="butt" />
+
+    <!-- Crosshair — right -->
+    <path
+        android:pathData="M 66.8,54 L 86.6,54"
+        android:fillColor="#00000000"
+        android:strokeColor="#C8BAA0"
+        android:strokeWidth="3.8"
+        android:strokeLineCap="butt" />
+
+    <!-- Center outer  r=7.9  #D4581A -->
+    <path
+        android:pathData="M 46.1,54 a 7.9,7.9 0 1 0 15.8,0 a 7.9,7.9 0 1 0 -15.8,0"
+        android:fillColor="#D4581A" />
+
+    <!-- Center mid  r=4.3  #E8722E -->
+    <path
+        android:pathData="M 49.7,54 a 4.3,4.3 0 1 0 8.6,0 a 4.3,4.3 0 1 0 -8.6,0"
+        android:fillColor="#E8722E" />
+
+    <!-- Center dot  r=1.6  #F5F0E8 -->
+    <path
+        android:pathData="M 52.4,54 a 1.6,1.6 0 1 0 3.2,0 a 1.6,1.6 0 1 0 -3.2,0"
+        android:fillColor="#F5F0E8" />
+
+    <!-- Corner tick — top-left -->
+    <path
+        android:pathData="M 34.5,34.5 L 36.6,36.6"
+        android:fillColor="#00000000"
+        android:strokeColor="#80C8BAA0"
+        android:strokeWidth="1.8"
+        android:strokeLineCap="round" />
+
+    <!-- Corner tick — top-right -->
+    <path
+        android:pathData="M 73.5,34.5 L 71.3,36.6"
+        android:fillColor="#00000000"
+        android:strokeColor="#80C8BAA0"
+        android:strokeWidth="1.8"
+        android:strokeLineCap="round" />
+
+    <!-- Corner tick — bottom-left -->
+    <path
+        android:pathData="M 34.5,73.5 L 36.6,71.3"
+        android:fillColor="#00000000"
+        android:strokeColor="#80C8BAA0"
+        android:strokeWidth="1.8"
+        android:strokeLineCap="round" />
+
+    <!-- Corner tick — bottom-right -->
+    <path
+        android:pathData="M 73.5,73.5 L 71.3,71.3"
+        android:fillColor="#00000000"
+        android:strokeColor="#80C8BAA0"
+        android:strokeWidth="1.8"
+        android:strokeLineCap="round" />
+
+</vector>

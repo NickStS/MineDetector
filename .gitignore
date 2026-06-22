@@ -1,0 +1,74 @@
+# Android / Gradle
+.gradle/
+**/build/
+captures/
+.externalNativeBuild/
+.cxx/
+*.iml
+
+# Local config / secrets
+local.properties
+.env
+.env.*
+*.local
+keystore.properties
+*.jks
+*.keystore
+*.pem
+*.p12
+*.pfx
+*.key
+
+# IDE
+.idea/
+.vscode/
+.claude/
+.kotlin/
+
+# Build artifacts
+*.apk
+*.aab
+*.ap_
+*.dex
+*.class
+
+# ML models / datasets
+*.tflite
+*.onnx
+*.pt
+*.pth
+*.weights
+*.engine
+*.pb
+*.h5
+*.keras
+*.safetensors
+models/
+datasets/
+dataset/
+runs/
+weights/
+checkpoints/
+calibration/
+calibration_images/
+backend/models/
+app/backend/models/
+app/src/main/assets/*.tflite
+app/src/main/assets/*.onnx
+app/src/main/assets/*.backup_*
+
+# Deployment outputs
+releases/
+deployments/
+
+# Logs / temp
+*.log
+build_output.txt
+tmpclaude-*
+nul
+nul_
+*.backup
+
+# OS
+.DS_Store
+Thumbs.db

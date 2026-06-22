@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- DJI Accessories -->
+    <!-- manufacturer="DJI" matches any DJI USB accessory.
+         model and version intentionally omitted — Android matches any value when attribute is absent.
+         Do NOT use regex like ".*" — Android uses exact string comparison, not regex. -->
+    <usb-accessory manufacturer="DJI" />
+</resources>

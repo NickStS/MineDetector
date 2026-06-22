@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_flight_mode"
+        android:title="Flight Mode" />
+    <item
+        android:id="@+id/menu_max_altitude"
+        android:title="Max Altitude" />
+    <item
+        android:id="@+id/menu_max_distance"
+        android:title="Max Distance" />
+    <item
+        android:id="@+id/menu_return_home_altitude"
+        android:title="Return Home Altitude" />
+    <item
+        android:id="@+id/menu_gimbal_settings"
+        android:title="Gimbal Settings" />
+    <item
+        android:id="@+id/menu_obstacle_avoidance"
+        android:title="Obstacle Avoidance" />
+    <item
+        android:id="@+id/menu_remote_controller"
+        android:title="Remote Controller" />
+    <item
+        android:id="@+id/menu_general_settings"
+        android:title="General Settings" />
+</menu>

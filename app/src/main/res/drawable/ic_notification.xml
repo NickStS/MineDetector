@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Notification icon — monochrome white on transparent background.
+  Android 5.0+ notification icons must be single-colour (#FFFFFF) with transparency.
+  The system tints with the app's notification colour automatically.
+  Size: 24×24dp  (standard notification icon)
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <!-- Outer ring  r=9.5  sw=1.5 -->
+    <path
+        android:pathData="M 2.5,12 a 9.5,9.5 0 1 0 19,0 a 9.5,9.5 0 1 0 -19,0"
+        android:fillColor="#00000000"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="1.5" />
+
+    <!-- Crosshair lines -->
+    <path
+        android:pathData="M 12,0 L 12,5"
+        android:fillColor="#00000000"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="1.5"
+        android:strokeLineCap="butt" />
+    <path
+        android:pathData="M 12,19 L 12,24"
+        android:fillColor="#00000000"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="1.5"
+        android:strokeLineCap="butt" />
+    <path
+        android:pathData="M 0,12 L 5,12"
+        android:fillColor="#00000000"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="1.5"
+        android:strokeLineCap="butt" />
+    <path
+        android:pathData="M 19,12 L 24,12"
+        android:fillColor="#00000000"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="1.5"
+        android:strokeLineCap="butt" />
+
+    <!-- Center dot  r=2.8  filled white -->
+    <path
+        android:pathData="M 9.2,12 a 2.8,2.8 0 1 0 5.6,0 a 2.8,2.8 0 1 0 -5.6,0"
+        android:fillColor="#FFFFFF" />
+
+</vector>

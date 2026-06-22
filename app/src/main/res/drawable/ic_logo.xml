@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Splash screen / in-app logo.
+  Same crosshair design as the launcher icon, optimised for display
+  on dark backgrounds (transparent fill — background comes from the layout).
+  Viewport: 200×200dp  (displayed at 200×200dp in activity_main.xml)
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="200dp"
+    android:height="200dp"
+    android:viewportWidth="200"
+    android:viewportHeight="200">
+
+    <!-- Outer ring  r=64.45  sw=8.20  #C8BAA0 -->
+    <path
+        android:pathData="M 35.55,100 a 64.45,64.45 0 1 0 128.9,0 a 64.45,64.45 0 1 0 -128.9,0"
+        android:fillColor="#00000000"
+        android:strokeColor="#C8BAA0"
+        android:strokeWidth="8.2" />
+
+    <!-- Middle ring  r=42.97  sw=4.30  #C8BAA0 at 35% -->
+    <path
+        android:pathData="M 57.03,100 a 42.97,42.97 0 1 0 85.94,0 a 42.97,42.97 0 1 0 -85.94,0"
+        android:fillColor="#00000000"
+        android:strokeColor="#59C8BAA0"
+        android:strokeWidth="4.3" />
+
+    <!-- Crosshair — top -->
+    <path
+        android:pathData="M 100,28.9 L 100,72.2"
+        android:fillColor="#00000000"
+        android:strokeColor="#C8BAA0"
+        android:strokeWidth="8.2"
+        android:strokeLineCap="butt" />
+
+    <!-- Crosshair — bottom -->
+    <path
+        android:pathData="M 100,127.8 L 100,171.1"
+        android:fillColor="#00000000"
+        android:strokeColor="#C8BAA0"
+        android:strokeWidth="8.2"
+        android:strokeLineCap="butt" />
+
+    <!-- Crosshair — left -->
+    <path
+        android:pathData="M 28.9,100 L 72.2,100"
+        android:fillColor="#00000000"
+        android:strokeColor="#C8BAA0"
+        android:strokeWidth="8.2"
+        android:strokeLineCap="butt" />
+
+    <!-- Crosshair — right -->
+    <path
+        android:pathData="M 127.8,100 L 171.1,100"
+        android:fillColor="#00000000"
+        android:strokeColor="#C8BAA0"
+        android:strokeWidth="8.2"
+        android:strokeLineCap="butt" />
+
+    <!-- Center outer  r=17.19  #D4581A -->
+    <path
+        android:pathData="M 82.81,100 a 17.19,17.19 0 1 0 34.38,0 a 17.19,17.19 0 1 0 -34.38,0"
+        android:fillColor="#D4581A" />
+
+    <!-- Center mid  r=9.375  #E8722E -->
+    <path
+        android:pathData="M 90.625,100 a 9.375,9.375 0 1 0 18.75,0 a 9.375,9.375 0 1 0 -18.75,0"
+        android:fillColor="#E8722E" />
+
+    <!-- Center dot  r=3.52  #F5F0E8 -->
+    <path
+        android:pathData="M 96.48,100 a 3.52,3.52 0 1 0 7.04,0 a 3.52,3.52 0 1 0 -7.04,0"
+        android:fillColor="#F5F0E8" />
+
+    <!-- Corner ticks  #C8BAA0 at 50% -->
+    <path
+        android:pathData="M 57.4,57.4 L 62.0,62.0"
+        android:fillColor="#00000000"
+        android:strokeColor="#80C8BAA0"
+        android:strokeWidth="3.9"
+        android:strokeLineCap="round" />
+    <path
+        android:pathData="M 142.6,57.4 L 138.0,62.0"
+        android:fillColor="#00000000"
+        android:strokeColor="#80C8BAA0"
+        android:strokeWidth="3.9"
+        android:strokeLineCap="round" />
+    <path
+        android:pathData="M 57.4,142.6 L 62.0,138.0"
+        android:fillColor="#00000000"
+        android:strokeColor="#80C8BAA0"
+        android:strokeWidth="3.9"
+        android:strokeLineCap="round" />
+    <path
+        android:pathData="M 142.6,142.6 L 138.0,138.0"
+        android:fillColor="#00000000"
+        android:strokeColor="#80C8BAA0"
+        android:strokeWidth="3.9"
+        android:strokeLineCap="round" />
+
+</vector>

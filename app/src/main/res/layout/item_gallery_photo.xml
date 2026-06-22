@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="120dp"
+    android:layout_margin="4dp"
+    app:cardBackgroundColor="#1A1A1A"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="2dp">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!-- Main Image View -->
+        <ImageView
+            android:id="@+id/iv_photo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop" />
+
+        <!-- Loading Indicator (центр экрана) -->
+        <ProgressBar
+            android:id="@+id/loading_indicator"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="center"
+            android:indeterminateTint="@color/dji_blue"
+            android:visibility="gone" />
+
+        <!-- Video Icon Overlay (центр экрана) -->
+        <ImageView
+            android:id="@+id/iv_video_icon"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            android:alpha="0.9"
+            android:src="@drawable/ic_video"
+            android:visibility="gone"
+            app:tint="#FFFFFF" />
+
+        <!-- Label (скрыто по умолчанию, было "Photo"/"Video") -->
+        <TextView
+            android:id="@+id/tv_detection_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="4dp"
+            android:background="#80000000"
+            android:paddingStart="6dp"
+            android:paddingTop="2dp"
+            android:paddingEnd="6dp"
+            android:paddingBottom="2dp"
+            android:textColor="#FFFFFF"
+            android:textSize="10sp"
+            android:visibility="gone" />
+
+    </FrameLayout>
+
+</androidx.cardview.widget.CardView>

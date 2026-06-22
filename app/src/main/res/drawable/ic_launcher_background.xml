@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Background layer for adaptive launcher icon.
+  Solid dark colour matching the SVG source (#1C1C1A → #111110).
+  The system applies the shape mask (circle/squircle) on top.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <path
+        android:pathData="M 0,0 H 108 V 108 H 0 Z"
+        android:fillColor="#1A1A18" />
+
+</vector>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Tab text style -->
+    <style name="TabTextStyle" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:letterSpacing">0.05</item>
+    </style>
+
+    <!--
+        Local theme applied to DJI PreFlightCheckListPanel.
+        Problem: MaterialComponents inflates Button as MaterialButton, which overrides
+        DJI's internal button rendering — "Calibrate" / "Format" text becomes invisible
+        (buttons appear as empty purple/blue rectangles).
+        Fix: use Theme.AppCompat as parent to prevent MaterialButton inflation entirely,
+        and use Button.Colored for solid background with visible white text.
+    -->
+    <style name="DJIPreflightPanelTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:textColorSecondary">@color/dji_silver_grey</item>
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorAccent">@color/accent</item>
+        <item name="buttonStyle">@style/DJIPanelButton</item>
+        <item name="android:buttonStyle">@style/DJIPanelButton</item>
+    </style>
+
+    <!-- Solid colored button with white text for DJI panel (Calibrate, Format, etc.) -->
+    <style name="DJIPanelButton" parent="Widget.AppCompat.Button.Colored">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:minHeight">32dp</item>
+        <item name="android:paddingLeft">12dp</item>
+        <item name="android:paddingRight">12dp</item>
+    </style>
+</resources>

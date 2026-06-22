@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000"
+    tools:context=".ui.TestVideoActivity">
+
+    <!-- Top Bar -->
+    <RelativeLayout
+        android:id="@+id/top_bar"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:background="#1A1A1A"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <!-- Back Button -->
+        <ImageButton
+            android:id="@+id/btn_back"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="8dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/back"
+            android:padding="12dp"
+            android:src="@drawable/ic_arrow_back"
+            app:tint="#FFFFFF" />
+
+        <!-- Tab Layout -->
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tab_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+            android:background="@android:color/transparent"
+            app:tabIndicatorColor="@color/dji_blue"
+            app:tabIndicatorHeight="3dp"
+            app:tabMode="fixed"
+            app:tabSelectedTextColor="#FFFFFF"
+            app:tabTextColor="#808080"
+            app:tabTextAppearance="@style/TabTextStyle">
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="SELECT" />
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="DETECT" />
+
+        </com.google.android.material.tabs.TabLayout>
+
+
+        <!-- Download button in header -->
+        <ImageButton
+            android:id="@+id/btn_download_header"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="16dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Download"
+            android:padding="8dp"
+            android:src="@drawable/ic_download"
+            android:visibility="gone"
+            app:tint="#FFFFFF" />
+        <!-- Spinner in top right corner -->
+        <Spinner
+            android:id="@+id/media_source_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="16dp"
+            android:background="@android:color/transparent"
+            android:minWidth="110dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="36dp"
+            android:spinnerMode="dropdown"
+            android:visibility="gone" />
+
+    </RelativeLayout>
+
+    <!-- ViewPager2 for SELECT tab -->
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/view_pager"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/top_bar" />
+
+    <!-- DETECT Tab Container -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/detect_container"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#000000"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/top_bar"
+        tools:visibility="visible">
+
+        <!-- Main content area -->
+        <FrameLayout
+            android:id="@+id/media_container"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="#000000"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/info_panel"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <!-- For Photos with Zoom -->
+            <com.github.chrisbanes.photoview.PhotoView
+                android:id="@+id/photo_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitCenter"
+                android:visibility="gone" />
+
+            <!-- For Video Playback -->
+            <FrameLayout
+                android:id="@+id/video_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipChildren="false"
+                android:clipToPadding="false"
+                android:visibility="gone">
+
+                <androidx.media3.ui.PlayerView
+                    android:id="@+id/player_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:show_buffering="when_playing"
+                    app:surface_type="texture_view"
+                    app:use_controller="true" />
+
+                <!-- Overlay for video detections - INSIDE video_container -->
+                <com.minedetector.ui.components.VideoOverlayView
+                    android:id="@+id/video_overlay"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clickable="false"
+                    android:focusable="false" />
+
+            </FrameLayout>
+
+            <!-- Overlay for photo detections -->
+            <com.minedetector.ui.components.VideoOverlayView
+                android:id="@+id/overlay_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone" />
+
+            <!-- Empty State -->
+            <LinearLayout
+                android:id="@+id/empty_state"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <ImageView
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:alpha="0.3"
+                    android:src="@drawable/ic_camera"
+                    app:tint="#FFFFFF" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:alpha="0.5"
+                    android:text="No media selected"
+                    android:textColor="#FFFFFF"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:alpha="0.3"
+                    android:text="Go to SELECT tab to choose media"
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+            <!-- Download Button -->
+            <ImageButton
+                android:id="@+id/btn_download"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="top|end"
+                android:layout_margin="16dp"
+                android:background="@drawable/capture_button_outer"
+                android:contentDescription="Download"
+                android:padding="12dp"
+                android:src="@drawable/ic_download"
+                android:visibility="gone"
+                app:tint="#FFFFFF" />
+
+        </FrameLayout>
+
+        <!-- Info Panel -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/info_panel"
+            android:layout_width="280dp"
+            android:layout_height="0dp"
+            android:layout_margin="16dp"
+            app:cardBackgroundColor="#1A1A1A"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="4dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fillViewport="true"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="12dp"
+                        android:text="Info"
+                        android:textColor="#FFFFFF"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginBottom="16dp"
+                        android:background="#333333" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Status:"
+                        android:textColor="#808080"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/tv_status"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:text="Ready"
+                        android:textColor="#FFFFFF"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <!-- Processing label -->
+                    <TextView
+                        android:id="@+id/tv_processing_label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="12dp"
+                        android:text="â³ Processing..."
+                        android:textColor="@color/dji_blue"
+                        android:textSize="14sp"
+                        android:visibility="gone" />
+
+                    <!-- Detection Results Section -->
+                    <TextView
+                        android:id="@+id/tv_detection_results_label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Detection Results:"
+                        android:textColor="#808080"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/tv_detection_stats"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:lineSpacingExtra="4dp"
+                        android:text="Detected: 0\nMON-50: 0\nPFM-1: 0\nPMN-1: 0"
+                        android:textColor="#FFFFFF"
+                        android:textSize="14sp" />
+
+                    <!-- Media Info Section -->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Media Info:"
+                        android:textColor="#808080"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/tv_media_info"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:lineSpacingExtra="4dp"
+                        android:text="Type: None\nName: -\nResolution: -"
+                        android:textColor="#FFFFFF"
+                        android:textSize="14sp" />
+
+                    <!-- Processing Info Section (video only) -->
+                    <LinearLayout
+                        android:id="@+id/processing_info_section"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Processing:"
+                            android:textColor="#808080"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:id="@+id/tv_processing_info"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="16dp"
+                            android:lineSpacingExtra="4dp"
+                            android:text="FPS: -\nFrames: -\nAvg Conf: -"
+                            android:textColor="#FFFFFF"
+                            android:textSize="14sp" />
+
+                    </LinearLayout>
+
+                    <!-- Progress Bar -->
+                    <ProgressBar
+                        android:id="@+id/progress_bar"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:visibility="gone" />
+
+                </LinearLayout>
+            </ScrollView>
+
+        </androidx.cardview.widget.CardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

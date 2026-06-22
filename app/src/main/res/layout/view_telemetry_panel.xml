@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_battery"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="🔋 ---%"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        android:layout_marginBottom="4dp" />
+
+    <TextView
+        android:id="@+id/tv_gps"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="📍 --.------, --.------"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        android:layout_marginBottom="4dp" />
+
+    <TextView
+        android:id="@+id/tv_altitude"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="⬆️ --.-m"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        android:layout_marginBottom="4dp" />
+
+    <TextView
+        android:id="@+id/tv_satellites"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="🛰️ --"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        android:layout_marginBottom="4dp" />
+
+    <TextView
+        android:id="@+id/tv_speed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="⚡ --.- m/s"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        android:layout_marginBottom="4dp" />
+
+    <TextView
+        android:id="@+id/tv_flight_mode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="✈️ Unknown"
+        android:textColor="@color/white"
+        android:textSize="14sp" />
+
+</LinearLayout>

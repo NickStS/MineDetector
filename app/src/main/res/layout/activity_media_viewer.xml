@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black">
+
+    <!-- Media Container (Photo or Video) -->
+    <FrameLayout
+        android:id="@+id/media_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!-- Photo Viewer with Zoom -->
+        <com.github.chrisbanes.photoview.PhotoView
+            android:id="@+id/photo_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            tools:ignore="ContentDescription" />
+
+        <!-- Video Player -->
+        <androidx.media3.ui.PlayerView
+            android:id="@+id/video_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            app:show_buffering="when_playing"
+            app:use_controller="true"
+            app:resize_mode="fit" />
+
+    </FrameLayout>
+
+    <!-- Top Controls -->
+    <LinearLayout
+        android:id="@+id/top_controls"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:orientation="horizontal"
+        android:background="@drawable/gradient_top_overlay"
+        android:padding="8dp"
+        android:gravity="center_vertical">
+
+        <!-- Back Button -->
+        <ImageButton
+            android:id="@+id/btn_back"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_arrow_back"
+            app:tint="@color/dji_white"
+            android:contentDescription="@string/back" />
+
+        <!-- Title/Filename -->
+        <TextView
+            android:id="@+id/tv_filename"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="Media"
+            android:textColor="@color/dji_white"
+            android:textSize="16sp"
+            android:maxLines="1"
+            android:ellipsize="end" />
+
+        <!-- More Options (3 dots) -->
+        <ImageButton
+            android:id="@+id/btn_more"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_more_vert"
+            app:tint="@color/dji_white"
+            android:contentDescription="More options" />
+
+    </LinearLayout>
+
+    <!-- Bottom Controls -->
+    <LinearLayout
+        android:id="@+id/bottom_controls"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:orientation="vertical"
+        android:background="@drawable/gradient_bottom_overlay"
+        android:padding="16dp">
+
+        <!-- Playback Speed (for videos) -->
+        <LinearLayout
+            android:id="@+id/speed_controls"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="12dp"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Speed:"
+                android:textColor="@color/dji_white"
+                android:textSize="14sp"
+                android:layout_marginEnd="8dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_speed_0_5x"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:minWidth="48dp"
+                android:text="0.5x"
+                android:textColor="@color/dji_silver_grey"
+                android:textSize="12sp"
+                app:cornerRadius="4dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_speed_1x"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:minWidth="48dp"
+                android:text="1x"
+                android:textColor="@color/dji_white"
+                android:textSize="12sp"
+                app:cornerRadius="4dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_speed_1_5x"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:minWidth="48dp"
+                android:text="1.5x"
+                android:textColor="@color/dji_silver_grey"
+                android:textSize="12sp"
+                app:cornerRadius="4dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_speed_2x"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:minWidth="48dp"
+                android:text="2x"
+                android:textColor="@color/dji_silver_grey"
+                android:textSize="12sp"
+                app:cornerRadius="4dp" />
+
+        </LinearLayout>
+
+        <!-- Send to Detection Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_send_to_detection"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_gravity="end"
+            android:text="Detect"
+            android:textColor="@color/dji_black"
+            app:backgroundTint="@color/dji_blue"
+            app:cornerRadius="8dp"
+            app:icon="@drawable/ic_radar"
+            app:iconGravity="start"
+            app:iconTint="@color/dji_black" />
+
+    </LinearLayout>
+
+</FrameLayout>

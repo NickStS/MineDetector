@@ -1,0 +1,762 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:keepScreenOn="true"
+    android:background="#000000"
+    tools:context="com.minedetector.ui.DroneControlActivity">
+
+    <!-- ==================== LAYER 1: FPV VIDEO (background) ==================== -->
+    <!-- IMPORTANT: Use 4-side alignment, NOT centerInParent (causes issues when resizing) -->
+    <!-- fitCenter сохраняет пропорции видео, но может оставлять черные полосы -->
+    <dji.ux.widget.FPVWidget
+        android:id="@+id/fpv_widget"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:scaleType="fitCenter"
+        custom:sourceCameraNameVisibility="false" />
+
+    <!-- Оверлей при отключении дрона: последний кадр в ч/б поверх FPVWidget -->
+    <!-- Размещён СРАЗУ после fpv_widget, чтобы перекрывать его в Z-порядке -->
+    <ImageView
+        android:id="@+id/fpv_disconnect_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:background="#000000"
+        android:scaleType="centerCrop"
+        android:visibility="gone" />
+
+    <!-- ✅ Чёрный фон для мини-FPV (показывается когда карта fullscreen) -->
+    <!-- ВАЖНО: elevation НЕ устанавливаем! С elevation=1dp fpv_mini_bg оказывался ВЫШЕ fpv_widget
+         (elevation=0), перекрывая видео чёрным фоном. Без elevation — порядок управляется
+         через bringToFront() в bringOverlaysToFront(): fpvMiniBg → fpvWidget (видео поверх фона). -->
+    <View
+        android:id="@+id/fpv_mini_bg"
+        android:layout_width="150dp"
+        android:layout_height="100dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:background="#FF000000"
+        android:visibility="gone" />
+
+    <dji.ux.widget.FPVOverlayWidget
+        android:id="@+id/fpv_overlay_widget"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!-- Прозрачный кликабельный overlay поверх мини-FPV виджета -->
+    <!-- FPV widget сам отображает видео (или чёрный экран когда не подключён) -->
+    <!-- Этот view только перехватывает клики чтобы они не уходили на карту под ним -->
+    <View
+        android:id="@+id/fpv_mini_container"
+        android:layout_width="150dp"
+        android:layout_height="100dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:background="#00000000"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone"
+        android:elevation="8dp" />
+
+    <dji.ux.workflow.CompassCalibratingWorkFlow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!-- AI Detection Overlay (bounding boxes) -->
+    <com.minedetector.ui.components.VideoOverlayView
+        android:id="@+id/overlay_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!-- ==================== LAYER 2: TOP STATUS BAR ==================== -->
+    <LinearLayout
+        android:id="@+id/top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:background="#B3000000"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="4dp"
+        android:paddingEnd="4dp">
+
+        <ImageView
+            android:id="@+id/btn_back"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/ic_arrow_back"
+            android:padding="4dp"
+            custom:tint="#FFFFFF"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Back" />
+
+        <!-- PreFlightStatus: match_parent height so it fills the entire bar -->
+        <dji.ux.widget.PreFlightStatusWidget
+            android:id="@+id/preflight_status_widget"
+            android:layout_width="300dp"
+            android:layout_height="match_parent" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" />
+
+        <dji.ux.widget.FlightModeWidget
+            android:layout_width="90dp"
+            android:layout_height="22dp" />
+
+        <dji.ux.widget.GPSSignalWidget
+            android:layout_width="44dp"
+            android:layout_height="22dp" />
+
+        <dji.ux.widget.VisionWidget
+            android:layout_width="24dp"
+            android:layout_height="22dp" />
+
+        <dji.ux.widget.RemoteControlSignalWidget
+            android:layout_width="34dp"
+            android:layout_height="22dp" />
+
+        <dji.ux.widget.VideoSignalWidget
+            android:layout_width="34dp"
+            android:layout_height="22dp" />
+
+        <!-- WiFi removed — not needed -->
+
+        <dji.ux.widget.BatteryWidget
+            android:layout_width="110dp"
+            android:layout_height="22dp"
+            custom:excludeView="singleVoltage" />
+
+        <ImageView
+            android:id="@+id/btn_menu"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/ic_more_horiz"
+            android:padding="4dp"
+            custom:tint="#FFFFFF"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Menu" />
+
+    </LinearLayout>
+
+    <!-- ==================== LAYER 3: REMAINING FLIGHT TIME (green bar) ==================== -->
+    <!-- alignBottom sticks it to the bottom edge of top_bar, -2dp makes it overlap slightly -->
+    <dji.ux.widget.RemainingFlightTimeWidget
+        android:id="@+id/remaining_flight_time"
+        android:layout_width="match_parent"
+        android:layout_height="18dp"
+        android:layout_alignBottom="@id/top_bar"
+        android:layout_marginBottom="-2dp"
+        android:background="@android:color/transparent"
+        android:translationY="6dp" />
+
+
+    <!-- ==================== LAYER 4: CAMERA CONFIG ==================== -->
+    <!-- Height 40dp, semi-transparent bg, widgets in FrameLayouts with scale to normalize size -->
+    <LinearLayout
+        android:id="@+id/camera_config_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_below="@id/top_bar"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="5dp"
+        android:background="@drawable/bg_camera_bar"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="4dp"
+        android:paddingEnd="4dp">
+
+        <!-- Group 1: ISO / Shutter / F / EV / WB -->
+        <!-- Each in FrameLayout with individual scale to look same size as Shutter -->
+        <FrameLayout
+            android:layout_width="35dp"
+            android:layout_height="match_parent">
+
+            <dji.ux.widget.config.CameraConfigISOAndEIWidget
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:scaleX="1.9"
+                android:scaleY="1.9"
+                android:translationX="15dp"
+                android:translationY="18dp" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="50dp"
+            android:layout_height="match_parent">
+
+            <dji.ux.widget.config.CameraConfigShutterWidget
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:scaleX="1.25"
+                android:scaleY="1.25"
+                android:translationX="7dp"
+                android:translationY="5.3dp" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="30dp"
+            android:layout_height="match_parent">
+
+            <dji.ux.widget.config.CameraConfigApertureWidget
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:scaleX="2.3"
+                android:scaleY="2.3"
+                android:translationX="23dp"
+                android:translationY="26dp" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="35dp"
+            android:layout_height="match_parent">
+
+            <dji.ux.widget.config.CameraConfigEVWidget
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:scaleX="2.04"
+                android:scaleY="2.04"
+                android:translationX="23dp"
+                android:translationY="20dp" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="35dp"
+            android:layout_height="match_parent">
+
+            <dji.ux.widget.config.CameraConfigWBWidget
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:scaleX="2.3"
+                android:scaleY="2.3"
+                android:translationX="25dp"
+                android:translationY="25.5dp" />
+        </FrameLayout>
+
+        <!-- Divider -->
+        <View
+            android:layout_width="1dp"
+            android:layout_height="28dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="2dp"
+            android:layout_marginEnd="2dp"
+            android:background="#55FFFFFF"
+            android:translationX="-1dp"
+            android:translationY="-2dp" />
+
+        <!-- Group 2: Storage/Capacity -->
+        <FrameLayout
+            android:layout_width="110dp"
+            android:layout_height="match_parent">
+
+            <dji.ux.widget.config.CameraConfigStorageWidget
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:scaleX="1.20"
+                android:scaleY="1.20"
+                android:translationX="5dp"
+                android:translationY="5.1dp" />
+        </FrameLayout>
+
+        <!-- Divider -->
+        <View
+            android:layout_width="1dp"
+            android:layout_height="28dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="2dp"
+            android:layout_marginEnd="2dp"
+            android:background="#55FFFFFF"
+            android:translationX="-1dp"
+            android:translationY="-2dp" />
+
+        <!-- Group 3: Focus Mode + AE Lock -->
+        <FrameLayout
+            android:layout_width="35dp"
+            android:layout_height="match_parent">
+
+            <dji.ux.widget.FocusModeWidget
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:scaleX="1.3"
+                android:scaleY="1.3"
+                android:translationY="2dp" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="34dp"
+            android:layout_height="match_parent">
+
+            <dji.ux.widget.FocusExposureSwitchWidget
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:scaleX="1.15"
+                android:scaleY="1.15"
+                android:translationY="2dp" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="34dp"
+            android:layout_height="match_parent">
+
+            <dji.ux.widget.AutoExposureLockWidget
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:scaleX="1.15"
+                android:scaleY="1.15"
+                android:translationY="3dp" />
+        </FrameLayout>
+
+    </LinearLayout>
+
+    <!-- Manual focus slider — positioned just left of CameraCapture (same as original) -->
+    <dji.ux.widget.ManualFocusWidget
+        android:id="@+id/manual_focus_widget"
+        android:layout_below="@id/camera_config_bar"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="95dp"
+        android:layout_marginTop="5dp"
+        android:layout_width="42dp"
+        android:layout_height="200dp" />
+
+    <!-- ==================== LAYER 5: LEFT CONTROLS (centered vertically) ==================== -->
+    <LinearLayout
+        android:id="@+id/left_panel"
+        android:layout_width="44dp"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="6dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <dji.ux.widget.TakeOffWidget
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_marginBottom="12dp" />
+
+        <dji.ux.widget.ReturnHomeWidget
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_marginBottom="12dp" />
+
+        <FrameLayout
+            android:id="@+id/btn_ai_detection"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:background="@drawable/circle_button_dark">
+
+            <TextView
+                android:id="@+id/tv_ai_label"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="AI"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+        </FrameLayout>
+
+    </LinearLayout>
+
+    <!-- AI Status text below left panel -->
+    <TextView
+        android:id="@+id/tv_ai_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/left_panel"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="2dp"
+        android:text="AI: OFF"
+        android:textColor="#FF9800"
+        android:textSize="9sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tv_detection_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Detections: 0"
+        android:textColor="#FF5722"
+        android:textSize="10sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        android:layout_below="@id/tv_ai_status"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="2dp" />
+
+    <!-- ==================== LAYER 6: RIGHT CAMERA CONTROLS ==================== -->
+    <dji.ux.widget.controls.CameraControlsWidget
+        android:id="@+id/CameraCapturePanel"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/camera_config_bar"
+        android:layout_width="50dp"
+        android:layout_height="213dp" />
+
+    <!-- DJI GO 4-style gimbal pitch indicator.
+         Left side: hollow circles (endpoints) + 10 ticks (3rd from each end = red) + vertical line.
+         Moving: red filled dot (current pitch) + rounded badge with integer angle value.
+         Interactive: drag to control gimbal via Gimbal.rotate(ABSOLUTE_ANGLE). -->
+    <com.minedetector.ui.components.DjiGimbalPitchIndicatorView
+        android:id="@+id/gimbal_pitch_view"
+        android:layout_width="70dp"
+        android:layout_height="213dp"
+        android:layout_toStartOf="@id/CameraCapturePanel"
+        android:layout_below="@id/camera_config_bar"
+        android:layout_marginEnd="10dp"
+        android:clickable="false"
+        android:focusable="false"
+        android:visibility="gone" />
+
+    <dji.ux.panel.CameraSettingExposurePanel
+        android:id="@+id/camera_exposure_panel"
+        android:layout_width="180dp"
+        android:layout_height="263dp"
+        android:layout_below="@id/camera_config_bar"
+        android:layout_toStartOf="@+id/CameraCapturePanel"
+        android:background="@android:color/transparent"
+        android:gravity="center"
+        android:elevation="30dp"
+        android:visibility="invisible" />
+
+    <dji.ux.panel.CameraSettingAdvancedPanel
+        android:id="@+id/camera_advanced_panel"
+        android:layout_width="180dp"
+        android:layout_height="263dp"
+        android:layout_below="@id/camera_config_bar"
+        android:layout_toStartOf="@+id/CameraCapturePanel"
+        android:background="@android:color/transparent"
+        android:gravity="center"
+        android:elevation="30dp"
+        android:visibility="invisible" />
+
+    <!-- Transparent overlay to catch taps outside PreFlight panel (dismiss on touch outside) -->
+    <View
+        android:id="@+id/preflight_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:elevation="19dp"
+        android:visibility="gone" />
+
+    <!--
+        android:theme — forces AppCompat buttons inside the DJI panel so that
+        "Calibrate" / "Format" button text is visible (white text on solid background).
+        MaterialComponents was inflating Button as MaterialButton, causing empty rectangles.
+    -->
+    <dji.ux.panel.PreFlightCheckListPanel
+        android:id="@+id/preflight_checklist_panel"
+        android:layout_width="400dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/top_bar"
+        android:layout_marginTop="24dp"
+        android:layout_centerHorizontal="true"
+        android:elevation="20dp"
+        android:theme="@style/DJIPreflightPanelTheme"
+        custom:excludeItem="ESCStatus"
+        android:visibility="gone" />
+
+    <!-- ==================== NOTIFICATION AREA ==================== -->
+    <FrameLayout
+        android:id="@+id/notification_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/remaining_flight_time"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="55dp"
+        android:layout_marginTop="4dp"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="#CC222222"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:paddingTop="3dp"
+            android:paddingBottom="3dp"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:id="@+id/notification_icon"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@drawable/ic_notification"
+                custom:tint="#FF9800"
+                android:layout_marginEnd="5dp" />
+
+            <TextView
+                android:id="@+id/notification_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Notification"
+                android:textColor="#FFFFFF"
+                android:textSize="11sp" />
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+    <!-- ==================== BOTTOM: Map/Radar ==================== -->
+    <FrameLayout
+        android:id="@+id/map_container"
+        android:layout_width="150dp"
+        android:layout_height="100dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:clickable="true"
+        android:focusable="true">
+
+        <!-- ✅ MAPBOX: Заменено DJI MapWidget на Mapbox MapView -->
+        <!-- Убрали clickable="false" чтобы клики проходили к родителю mapContainer -->
+        <com.mapbox.maps.MapView
+            android:id="@+id/map_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <dji.ux.widget.dashboard.CompassWidget
+            android:id="@+id/compass_widget"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:clickable="false"
+            android:focusable="false"
+            android:layout_gravity="center"
+            android:visibility="gone" />
+
+        <!-- ✅ Невидимый overlay для перехвата кликов на миникарте -->
+        <!-- Скрывается когда карта в fullscreen -->
+        <View
+            android:id="@+id/map_click_overlay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#00000000"
+            android:clickable="true"
+            android:focusable="true"
+            android:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/btn_toggle_radar"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="top|end"
+            android:layout_margin="4dp"
+            android:padding="3dp"
+            android:src="@drawable/ic_radar"
+            custom:tint="#FFFFFF"
+            android:background="#99000000"
+            android:contentDescription="Toggle Radar" />
+
+    </FrameLayout>
+
+    <!-- ==================== MAP CONTROLS (right stack, centered vertically) ==================== -->
+    <!-- Only visible when map is fullscreen. DJI camera panels are hidden in that mode.         -->
+    <!-- Order top→bottom: Layers | Center on Drone | Center on Me                              -->
+    <!-- To reposition: change layout_marginEnd on the container                                 -->
+    <LinearLayout
+        android:id="@+id/map_controls_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="4dp"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:elevation="8dp">
+
+        <!-- Button: switch map layer (Satellite+Roads → Streets → Satellite → Terrain) -->
+        <!-- Code variable: btnMapLayers -->
+        <ImageView
+            android:id="@+id/btn_map_layers"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginBottom="4dp"
+            android:padding="8dp"
+            android:src="@drawable/ic_layers"
+            custom:tint="#FFFFFF"
+            android:background="#99000000"
+            android:contentDescription="Switch map layer" />
+
+        <!-- Button: center map on DRONE -->
+        <!-- Code variable: btnCenterOnDrone -->
+        <ImageView
+            android:id="@+id/btn_center_on_drone"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginBottom="4dp"
+            android:padding="8dp"
+            android:src="@drawable/ic_gps"
+            custom:tint="#FFFFFF"
+            android:background="#99000000"
+            android:contentDescription="Center on drone" />
+
+        <!-- Button: center map on PILOT (me) -->
+        <!-- Code variable: btnCenterOnMe -->
+        <ImageView
+            android:id="@+id/btn_center_on_me"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:padding="8dp"
+            android:src="@drawable/ic_person"
+            custom:tint="#FFFFFF"
+            android:background="#99000000"
+            android:contentDescription="Center on me" />
+
+    </LinearLayout>
+
+    <!-- ==================== Telemetry panel ==================== -->
+    <LinearLayout
+        android:id="@+id/telemetry_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_toEndOf="@id/map_container"
+        android:layout_marginBottom="4dp"
+        android:layout_marginStart="6dp"
+        android:background="@android:color/transparent"
+        android:padding="4dp"
+        android:orientation="horizontal">
+
+        <!-- First Column: D / H.S -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:layout_width="90dp"
+                android:layout_height="22dp">
+                <dji.ux.widget.dashboard.DistanceHomeWidget
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleX="1"
+                    android:scaleY="1" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="90dp"
+                android:layout_height="22dp"
+                android:layout_marginTop="2dp">
+                <dji.ux.widget.dashboard.HorizontalVelocityWidget
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleX="1"
+                    android:scaleY="1" />
+            </FrameLayout>
+
+        </LinearLayout>
+
+        <!-- Second Column: H / V.S -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginStart="4dp">
+
+            <FrameLayout
+                android:layout_width="90dp"
+                android:layout_height="22dp">
+                <dji.ux.widget.dashboard.AltitudeWidget
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleX="1"
+                    android:scaleY="1" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="90dp"
+                android:layout_height="22dp"
+                android:layout_marginTop="2dp">
+                <dji.ux.widget.dashboard.VerticalVelocityWidget
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleX="1"
+                    android:scaleY="1" />
+            </FrameLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- ==================== Album button ==================== -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/btn_album"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/CameraCapturePanel"
+        android:layout_marginEnd="5dp"
+        android:layout_marginTop="6dp"
+        custom:cardBackgroundColor="#80000000"
+        custom:cardCornerRadius="8dp"
+        custom:cardElevation="2dp"
+        custom:strokeWidth="0dp">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_gallery"
+            android:padding="8dp"
+            custom:tint="#FFFFFF" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Кнопка центрирования подвеса (сброс pitch → 0°) -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/btn_gimbal_center"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/btn_album"
+        android:layout_marginEnd="5dp"
+        android:layout_marginTop="6dp"
+        custom:cardBackgroundColor="#80000000"
+        custom:cardCornerRadius="8dp"
+        custom:cardElevation="2dp"
+        custom:strokeWidth="0dp"
+        android:translationX="-53dp"
+        android:translationY="-46dp">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_gimbal_center"
+            android:padding="8dp"
+            custom:tint="#FFFFFF" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Gimbal pitch angle is shown by CameraControlsWidget (id=CameraCapturePanel) above. -->
+
+    <!-- Hidden compatibility view -->
+    <com.minedetector.ui.components.TelemetryPanel
+        android:id="@+id/telemetry_panel"
+        android:layout_width="1dp"
+        android:layout_height="1dp"
+        android:visibility="gone" />
+
+</RelativeLayout>

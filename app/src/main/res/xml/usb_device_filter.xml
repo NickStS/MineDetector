@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- DJI USB Device Filters -->
+    <usb-device
+        vendor-id="11427"
+        product-id="1" />
+    <usb-device
+        vendor-id="11427"
+        product-id="2" />
+</resources>
