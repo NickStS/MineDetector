@@ -1,143 +1,137 @@
 # MineDetector
 
-<p align="center">
-  <b>AI-assisted UAV system for detecting potential landmines and unexploded ordnance from drone imagery.</b>
-</p>
+AI-powered Android application for detecting potential mine threats from DJI drone imagery in real time.
+
+MineDetector combines a DJI drone video pipeline, an on-device YOLO detector, telemetry, maps, local storage and an optional backend into one research prototype for safer remote inspection of potentially dangerous areas.
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Platform-Android-brightgreen" alt="Android">
-  <img src="https://img.shields.io/badge/Language-Kotlin-blue" alt="Kotlin">
-  <img src="https://img.shields.io/badge/ML-YOLO%20%2B%20TFLite-orange" alt="YOLO + TFLite">
-  <img src="https://img.shields.io/badge/Drone-DJI%20SDK-lightgrey" alt="DJI SDK">
-  <img src="https://img.shields.io/badge/Status-Research%20Prototype-yellow" alt="Research Prototype">
+  <img src="https://img.shields.io/badge/Android-API%2024%2B-brightgreen" alt="Android API 24+">
+  <img src="https://img.shields.io/badge/Kotlin-2.0.21-blue" alt="Kotlin">
+  <img src="https://img.shields.io/badge/DJI%20Mobile%20SDK-v4-lightgrey" alt="DJI Mobile SDK v4">
+  <img src="https://img.shields.io/badge/YOLO-TensorFlow%20Lite-orange" alt="YOLO TensorFlow Lite">
+  <img src="https://img.shields.io/badge/License-MIT-green" alt="MIT License">
 </p>
 
 ---
 
 ## Overview
 
-**MineDetector** is an Android-based research prototype for detecting potentially dangerous objects from UAV imagery.  
-The project combines a DJI drone video pipeline, an on-device YOLO inference module, telemetry handling, map visualization, local detection history, and optional backend synchronization.
+MineDetector is an Android research project built around one main idea: use a drone camera stream and an on-device neural network to help detect suspicious mine-like objects from the air.
 
-The main goal of the project is to demonstrate how drone imagery and mobile AI can support safer inspection of potentially contaminated areas without direct human contact.
+The app receives imagery from a DJI drone, processes frames through a YOLO-based detector, draws detection boxes over the video, stores results locally and can optionally sync detections with a backend server.
 
-> **Safety notice:** This project is not a replacement for professional demining teams. It does not confirm whether an object is dangerous. Any real-world use must be performed only by qualified specialists and according to local laws, aviation rules, and explosive ordnance safety procedures.
+The project was created as a bachelor thesis / research prototype and is not intended to replace professional explosive ordnance disposal work.
 
----
-
-## Key Features
-
-- Live drone camera view through DJI Mobile SDK
-- On-device object detection using YOLO exported to TensorFlow Lite
-- Optional ONNX inference module
-- Detection overlay with bounding boxes and confidence values
-- Drone telemetry panel: battery, GPS, altitude, distance, signal and flight state
-- Map view with Mapbox integration
-- Test mode for processing local photos and videos without a drone
-- Detection gallery and media viewer
-- Local data storage using Room
-- Photo metadata handling with EXIF support
-- Dataset collection and training helper scripts
-- Optional FastAPI backend for model updates and detection upload
+> **Safety notice:** MineDetector does not confirm that an object is a mine or explosive device. It only highlights visual patterns detected by a machine learning model. Real-world inspection must be performed only by trained specialists and according to local law, aviation rules and explosive ordnance safety procedures.
 
 ---
 
-## Tech Stack
+## ✨ Features
 
-### Android App
+### 🚁 DJI drone integration
 
-- **Language:** Kotlin
-- **Build system:** Gradle Kotlin DSL
-- **Minimum SDK:** Android 7.0 / API 24
-- **Target SDK:** API 34
-- **Architecture:** Activity-based Android app with repositories, managers and local database layer
-- **Drone SDK:** DJI Mobile SDK v4
-- **ML:** TensorFlow Lite, YOLO, optional ONNX Runtime module
-- **Maps:** Mapbox Maps SDK
-- **Database:** Room
-- **Async:** Kotlin Coroutines
-- **Media:** Media3 / ExoPlayer, MediaCodec
-- **Networking:** Retrofit, OkHttp, Gson
-- **Background jobs:** WorkManager
+- DJI Mobile SDK v4 integration.
+- Drone connection and SDK registration flow.
+- Live FPV video stream handling.
+- Camera and media controls.
+- Telemetry collection: GPS, altitude, distance, battery, gimbal pitch and connection state.
+- Separate managers for connection, camera, video stream, telemetry, media and product state.
 
-### Backend
+### 🧠 AI detection pipeline
 
-- **Framework:** FastAPI
-- **Language:** Python
-- **Containerization:** Docker / Docker Compose
-- **Optional services:** PostgreSQL, Redis
-- **Purpose:** detection upload, model metadata, model update endpoint, feedback endpoint
+- YOLO-based object detection pipeline.
+- TensorFlow Lite inference on Android.
+- Optional ONNX detector module.
+- GPU delegate support with CPU fallback.
+- Confidence filtering, class filtering and Non-Maximum Suppression.
+- Simple ByteTrack-style object tracking.
+- Detection overlay with bounding boxes and confidence values.
+- Test mode for running detection on local photos and videos without a drone.
 
----
+### 🗺️ Maps, telemetry and mission UI
 
-## Repository Structure
+- Mapbox-based map screen.
+- Detection markers on the map.
+- Custom telemetry panel.
+- Gimbal pitch indicator.
+- Detection history and statistics.
+- Media gallery for drone and local files.
+- Annotation screen for reviewing and labeling images.
 
-```text
-MineDetector/
-├── app/
-│   ├── backend/                  # Optional FastAPI backend
-│   ├── scripts/                  # Dataset, training and deployment helpers
-│   ├── src/main/
-│   │   ├── assets/               # labels.txt; model files are not included
-│   │   ├── java/com/minedetector/
-│   │   │   ├── data/             # Room database, entities, DAO, repositories
-│   │   │   ├── dji/              # DJI connection, camera, telemetry and stream managers
-│   │   │   ├── ml/               # YOLO/TFLite/ONNX detection pipeline
-│   │   │   ├── network/          # API client and network models
-│   │   │   ├── services/         # Sync and model update services
-│   │   │   ├── ui/               # Activities, fragments and custom views
-│   │   │   ├── utils/            # Helpers and constants
-│   │   │   └── video/            # Video frame processing
-│   │   └── res/                  # Layouts, drawables, strings and themes
-│   └── build.gradle.kts
-├── gradle/
-├── build.gradle.kts
-├── settings.gradle.kts
-├── gradle.properties
-├── gradlew
-├── gradlew.bat
-├── local.properties.example
-└── README.md
-```
+### 💾 Local storage and sync
+
+- Room database for detections, flight logs and annotations.
+- Repository layer for local data access.
+- Background synchronization using WorkManager.
+- Optional backend upload for detections.
+- Model update service for checking remote model metadata.
+
+### 🐍 Optional backend
+
+- FastAPI backend.
+- Docker / Docker Compose support.
+- Endpoints for detection upload, model metadata, model download, feedback and statistics.
+- Separate training / deployment helper scripts.
 
 ---
 
-## What Is Not Included
+## 🧭 Application workflow
 
-The repository intentionally does **not** include:
+1. Connect a supported DJI drone and remote controller to an Android device.
+2. Launch MineDetector and wait for DJI SDK registration.
+3. Open the drone control screen.
+4. Start receiving the FPV video stream.
+5. Run AI detection on incoming frames.
+6. Review detections directly on the video overlay.
+7. Save detections with metadata and telemetry.
+8. View results in the gallery, database history or map screen.
+9. Optionally sync results with the backend server.
 
-- trained model files: `*.tflite`, `*.onnx`, `*.pt`, `*.pth`
-- datasets and calibration images
-- generated APK/AAB files
-- local API keys
-- local Android Studio configuration
+---
+
+## 📦 What is not included
+
+This public repository intentionally does **not** include trained models, datasets or private keys.
+
+Not included:
+
+- `*.tflite`
+- `*.onnx`
+- `*.pt`
+- `*.pth`
+- training datasets
+- calibration images
+- generated APK / AAB files
+- `local.properties`
+- API keys and access tokens
+- Android Studio local files
 - Gradle build outputs
 
-This keeps the repository lightweight and prevents accidental publishing of private models, datasets or credentials.
+This keeps the repository clean and prevents accidental publishing of private models, datasets or credentials.
 
 ---
 
-## Setup
+## ⚙️ Installation
 
-### 1. Clone the repository
-
-```bash
-git clone https://github.com/YOUR_USERNAME/MineDetector.git
-cd MineDetector
-```
-
-### 2. Open in Android Studio
-
-Open the project root folder in Android Studio.
-
-Recommended environment:
+### Requirements
 
 - Android Studio Hedgehog or newer
 - JDK 17
 - Android SDK 34
-- Physical Android device for DJI testing
+- Android device with API 24+
+- DJI developer account
+- DJI Mobile SDK API key
+- Mapbox access token
+- Optional: Google Maps API key for DJI map compatibility
 
-### 3. Create `local.properties`
+### Clone the repository
+
+```bash
+git clone https://github.com/NickStS/MineDetector.git
+cd MineDetector
+```
+
+### Create local configuration
 
 Copy the example file:
 
@@ -159,14 +153,9 @@ SERVER_URL=https://api.minedetector.example.com/
 
 `local.properties` is ignored by Git and must never be committed.
 
-### 4. Configure the Mapbox downloads token
+### Configure Mapbox downloads token
 
-Mapbox SDK dependencies may require a downloads token.  
-Set it globally in your user Gradle config or as an environment variable:
-
-```properties
-MAPBOX_DOWNLOADS_TOKEN=YOUR_MAPBOX_DOWNLOADS_TOKEN_HERE
-```
+Mapbox SDK dependencies may require a downloads token.
 
 Recommended location:
 
@@ -174,15 +163,17 @@ Recommended location:
 ~/.gradle/gradle.properties
 ```
 
-or environment variable:
+Example:
 
-```bash
-export MAPBOX_DOWNLOADS_TOKEN=YOUR_MAPBOX_DOWNLOADS_TOKEN_HERE
+```properties
+MAPBOX_DOWNLOADS_TOKEN=YOUR_MAPBOX_DOWNLOADS_TOKEN_HERE
 ```
 
-### 5. Add a local model file
+---
 
-The trained model is not included in the repository.
+## 🧠 Add a local model
+
+The trained model is not stored in this repository.
 
 Place your exported model locally into:
 
@@ -190,36 +181,32 @@ Place your exported model locally into:
 app/src/main/assets/yolo_mine_detector.tflite
 ```
 
-Optional ONNX model path:
+Optional ONNX model:
 
 ```text
 app/src/main/assets/yolo_mine_detector.onnx
 ```
 
-The labels file should be placed here:
+Labels file:
 
 ```text
 app/src/main/assets/labels.txt
 ```
 
-Example:
+Example labels:
 
 ```text
 class_1
 class_2
 class_3
 class_4
+class_5
+class_6
 ```
 
 ---
 
-## Build
-
-### Linux / macOS
-
-```bash
-./gradlew assembleDebug
-```
+## 🔨 Build from source
 
 ### Windows
 
@@ -227,94 +214,119 @@ class_4
 gradlew.bat assembleDebug
 ```
 
-The debug APK will be generated under:
+### Linux / macOS
+
+```bash
+./gradlew assembleDebug
+```
+
+The generated debug APK will appear in:
 
 ```text
 app/build/outputs/apk/debug/
 ```
 
-Build outputs are ignored by Git.
-
----
-
-## Running the App
-
-### Drone Mode
-
-1. Connect the DJI remote controller to the Android device via USB.
-2. Power on the drone and controller.
-3. Launch MineDetector.
-4. Open the drone control screen.
-5. Wait for SDK registration and drone connection.
-6. Enable detection after the video stream becomes available.
-
-### Test Mode
-
-Test mode can be used without a drone:
-
-1. Launch the app.
-2. Open test mode.
-3. Select a local photo or video.
-4. Run detection.
-5. Review the overlay and saved results.
-
----
-
-## ML Pipeline
-
-The repository includes helper scripts for working with the model pipeline:
-
-```text
-app/scripts/collect_dataset.py
-app/scripts/train_model.py
-app/scripts/deploy_model.sh
-```
-
-Typical workflow:
-
-1. Collect images from UAV footage or test data.
-2. Annotate images in YOLO format.
-3. Train a YOLO model.
-4. Export the model to TensorFlow Lite.
-5. Place the exported model into Android assets locally.
-6. Build and test on a physical device.
-
-Model files, datasets and training outputs are ignored by Git.
-
----
-
-## Optional Backend
-
-The backend is located in:
-
-```text
-app/backend/
-```
-
-Run with Docker Compose:
+To create a release build:
 
 ```bash
-cd app/backend
-docker compose up --build
+./gradlew assembleRelease
 ```
-
-Available backend features include:
-
-- model metadata endpoint
-- model download endpoint
-- detection upload endpoint
-- batch detection upload
-- alert creation endpoint
-- feedback endpoint
-- basic statistics endpoint
-
-The backend is optional. The Android app can be used as a local prototype without deploying the backend.
 
 ---
 
-## Security Notes
+## 🧪 Test mode
 
-Do not commit:
+MineDetector can be tested without a drone.
+
+1. Open the app.
+2. Go to the test video / image screen.
+3. Select a local photo or video.
+4. Run detection.
+5. Review the overlay, confidence values and saved results.
+
+This mode is useful for debugging the ML pipeline before testing with real DJI hardware.
+
+---
+
+## 🖼️ Screenshots
+
+Add screenshots or GIFs here after uploading them to the repository.
+
+```text
+docs/screenshots/main_menu.png
+docs/screenshots/drone_control.png
+docs/screenshots/detection_overlay.png
+docs/screenshots/map_view.png
+```
+
+Example Markdown:
+
+```md
+<p align="center">
+  <img src="docs/screenshots/drone_control.png" width="45%">
+  <img src="docs/screenshots/detection_overlay.png" width="45%">
+</p>
+```
+
+---
+
+## 🗂️ Project structure
+
+```text
+MineDetector/
+├── app/
+│   ├── backend/                    # Optional FastAPI backend
+│   ├── scripts/                    # Dataset, training and deployment helpers
+│   └── src/main/
+│       ├── assets/                 # labels.txt; model files are local only
+│       ├── java/com/minedetector/
+│       │   ├── data/               # Room DB, DAO, entities, repositories
+│       │   ├── dji/                # DJI connection, camera, stream and telemetry managers
+│       │   ├── ml/                 # TFLite / ONNX detection pipeline
+│       │   ├── network/            # Retrofit API layer
+│       │   ├── services/           # Sync and model update services
+│       │   ├── ui/                 # Activities, fragments and custom views
+│       │   ├── utils/              # Constants, permissions, EXIF and image helpers
+│       │   └── video/              # Video decoding and frame processing
+│       └── res/                    # Layouts, drawables, strings and themes
+├── gradle/
+├── build.gradle.kts
+├── settings.gradle.kts
+├── gradle.properties
+├── gradlew
+├── gradlew.bat
+├── local.properties.example
+├── LICENSE
+└── README.md
+```
+
+---
+
+## 🧱 Tech stack
+
+| Layer | Technology |
+|---|---|
+| Language | Kotlin |
+| Platform | Android API 24+ |
+| Build | Gradle Kotlin DSL |
+| Drone SDK | DJI Mobile SDK v4 |
+| AI inference | TensorFlow Lite |
+| Optional inference | ONNX Runtime module |
+| Model family | YOLO |
+| Maps | Mapbox Maps SDK |
+| Local database | Room |
+| Async | Kotlin Coroutines |
+| Background jobs | WorkManager |
+| Networking | Retrofit, OkHttp, Gson |
+| Media | Media3 / ExoPlayer |
+| Backend | FastAPI |
+| Backend runtime | Docker / Docker Compose |
+
+---
+
+## 🔐 Security notes
+
+Never commit:
 
 ```text
 local.properties
@@ -336,33 +348,49 @@ build/
 .idea/
 ```
 
-Before pushing, scan the repository for secrets:
+Before pushing, scan the repository:
 
 ```bash
 grep -RniE "API_KEY|TOKEN|SECRET|PASSWORD|AIza|sk-|pk\." .
 ```
 
-If a real API key was ever pushed publicly, revoke it and create a new one.
+If a real key was ever pushed publicly, revoke it and create a new one.
 
 ---
 
-## Current Status
+## 🧪 Current status
 
-This project is a research / educational prototype.  
-The core Android structure, DJI integration layer, detection pipeline, UI screens, telemetry handling, local database and optional backend are included.
+MineDetector is a research / educational prototype.
 
-The trained model and private dataset are intentionally excluded from the public repository.
+Implemented parts include:
+
+- Android app structure
+- DJI connection layer
+- video stream pipeline
+- telemetry layer
+- TFLite / YOLO detection pipeline
+- detection overlay
+- local database
+- media gallery
+- annotation screen
+- map module
+- optional backend structure
+
+Model files and datasets are intentionally excluded from the repository.
 
 ---
 
-## Disclaimer
+## 📄 License
 
-MineDetector is intended only for research, educational and humanitarian technology demonstration purposes.  
-It must not be used as the only decision-making tool in real-world explosive ordnance scenarios. Always involve certified professionals and follow official safety procedures.
+Released under the [MIT License](LICENSE).
 
 ---
 
-## Author
+## 👤 Author
 
-**Nick Startsev**  
-Portfolio: https://nicksts.github.io/my-resume/
+**Nick Startsev**
+
+- GitHub: [@NickStS](https://github.com/NickStS)
+- Portfolio: [nicksts.github.io/my-resume](https://nicksts.github.io/my-resume/)
+
+Built with Kotlin, DJI Mobile SDK, YOLO and TensorFlow Lite.
