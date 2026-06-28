@@ -12,9 +12,9 @@ The project was developed as a bachelor thesis project in Software Engineering. 
 
 ## Demo
 
-[![MineDetector demo](assets/images/featured-minedetector.jpg)](assets/videos/demo.mp4)
+https://github.com/user-attachments/assets/0ae0caf1-5a76-499f-8ab6-bfbf725829f8
 
-[Watch demo video](assets/videos/demo.mp4)
+
 
 ---
 
