@@ -1,32 +1,66 @@
 # MineDetector
 
-Android prototype for detecting potential mine-like objects from DJI drone imagery using on-device computer vision.
+Android research prototype for detecting potential mine-like objects from DJI drone imagery using on-device computer vision.
 
-The project combines DJI Mobile SDK, a YOLO-based detection pipeline, TensorFlow Lite inference, drone telemetry, map visualization, local storage and an optional backend for synchronization.
+MineDetector combines DJI Mobile SDK, a YOLO-based detection pipeline, TensorFlow Lite inference, drone telemetry, detection overlays, local storage and experimental map visualization.
 
-MineDetector was developed as a research and bachelor thesis project. The goal is to test how UAV imagery and mobile AI can be used for remote inspection of potentially dangerous areas.
+The project was developed as a bachelor thesis project in Software Engineering. The main goal was to test how UAV imagery and mobile AI inference can be used for remote visual inspection of potentially dangerous areas.
+
+> This project is a research prototype. It is not intended for direct operational use without further testing, validation and professional review.
+
+---
+
+## Demo
+
+[![MineDetector demo](assets/images/featured-minedetector.jpg)](assets/videos/demo.mp4)
+
+[Watch demo video](assets/videos/demo.mp4)
+
+---
 
 ## Main idea
 
-The application receives an image or video stream from a DJI drone, processes frames locally on an Android device and highlights objects that look similar to predefined dangerous object classes.
+The application receives imagery from a DJI drone, processes frames locally on an Android device and highlights objects that look similar to predefined dangerous object classes.
 
 The system is designed as a support tool for visual inspection. It does not confirm that an object is explosive or safe.
+
+The main value of the project is the full prototype workflow: drone imagery input, Android-based AI inference, detection overlay, telemetry usage and result visualization.
+
+---
+
+## Visual results
+
+### Android detection overlay
+
+![MineDetector Android detection overlay](assets/images/featured-minedetector.jpg)
+
+### Detection example from UAV imagery
+
+![Detection example](assets/images/DJI_20250710182421_0002_V.jpg)
+
+### Validation batch predictions
+
+![Validation batch predictions](assets/images/val_batch0_pred.jpg)
+
+---
 
 ## Features
 
 - DJI drone connection through DJI Mobile SDK v4
-- live camera stream processing
+- Live camera stream processing
 - YOLO-based object detection
 - TensorFlow Lite inference on Android
-- optional ONNX detector module
-- detection overlay with bounding boxes and confidence values
-- drone telemetry display
-- map view with detection markers
-- local test mode for images and videos
-- detection history stored locally
+- Optional ONNX detector module
+- Detection overlay with bounding boxes and confidence values
+- Drone telemetry display
+- Local test mode for images and videos
+- Detection history stored locally
 - Room database integration
-- optional backend synchronization
-- helper scripts for dataset processing, training and deployment
+- Experimental map-based visualization
+- Optional backend synchronization
+- Helper scripts for dataset processing, training and deployment
+
+---
 
 ## Tech stack
 
@@ -45,6 +79,59 @@ The system is designed as a support tool for visual inspection. It does not conf
 | Background jobs | WorkManager |
 | Backend | FastAPI |
 | Backend services | Docker, PostgreSQL, Redis |
+
+---
+
+## Model and dataset overview
+
+The model was trained on a custom UAV image dataset with multiple mine-like object classes.
+
+Classes used in the experiment:
+
+- MON-50
+- PFM-1
+- PMN-1
+- PMN-2
+- POM-3
+- TM-62
+
+---
+
+## Prototype limitations
+
+MineDetector was developed as a research and bachelor thesis prototype, not as a production-ready detection system.
+
+The training dataset was relatively small and limited in object variety, lighting conditions, backgrounds, flight altitude, camera angles and capture scenarios. Because of this, the model can produce unstable detection results, miss objects or confuse visually similar classes.
+
+The main focus of the project was not to build a fully reliable mine detection model, but to demonstrate the complete application workflow:
+
+- UAV imagery input
+- Android-based on-device inference
+- YOLO / TensorFlow Lite integration
+- Detection overlay
+- Drone telemetry usage
+- Local testing workflow
+- Experimental result visualization
+
+With a larger and more diverse dataset, additional validation and further model tuning, the detection quality could be improved.
+
+---
+
+## Training results
+
+The project used a YOLO-based object detection pipeline. The final model was exported for local/mobile inference.
+
+The training and validation plots below show the experimental model behavior on the available dataset. Because the dataset was limited, these results should be treated as prototype-level results rather than production-level model performance.
+
+### Training metrics
+
+![Training results](assets/images/results.png)
+
+### Normalized confusion matrix
+
+![Confusion matrix normalized](assets/images/confusion_matrix_normalized.png)
+
+---
 
 ## Repository structure
 
@@ -65,6 +152,9 @@ MineDetector/
 │       │   ├── utils/            # Utility classes
 │       │   └── video/            # Video frame processing
 │       └── res/                  # Android resources
+├── assets/
+│   ├── images/                   # README screenshots and selected plots
+│   └── videos/                   # Demo video
 ├── gradle/
 ├── build.gradle.kts
 ├── settings.gradle.kts
@@ -75,6 +165,24 @@ MineDetector/
 ├── LICENSE
 └── README.md
 ```
+
+---
+
+## Media files used in README
+
+Place the following files in the repository:
+
+```text
+assets/images/featured-minedetector.jpg
+assets/images/DJI_20250710182421_0002_V.jpg
+assets/images/val_batch0_pred.jpg
+assets/images/results.png
+assets/images/confusion_matrix_normalized.png
+
+assets/videos/demo.mp4
+```
+
+---
 
 ## Setup
 
@@ -116,6 +224,8 @@ SERVER_URL=https://api.example.com/
 
 `local.properties` is ignored by Git and should not be committed.
 
+---
+
 ## Model files
 
 Trained model files are not included in this repository.
@@ -140,6 +250,8 @@ app/src/main/assets/labels.txt
 
 Model files, datasets and training outputs are excluded from Git because they may be large or private.
 
+---
+
 ## Build
 
 Windows:
@@ -160,6 +272,8 @@ Debug build output:
 app/build/outputs/apk/debug/
 ```
 
+---
+
 ## Optional backend
 
 The backend is located in:
@@ -178,6 +292,8 @@ docker compose up --build
 The backend can be used for detection upload, model metadata, model download, feedback and statistics.
 
 The Android app can also be tested without the backend.
+
+---
 
 ## Notes
 
@@ -199,19 +315,16 @@ Before pushing changes, check that no private data is included:
 grep -RniE "API_KEY|TOKEN|SECRET|PASSWORD|AIza|sk-|pk\." .
 ```
 
+---
+
 ## Status
 
-This is a research prototype. The main purpose of the project is to demonstrate the integration of UAV imagery, Android-based AI inference and detection result visualization.
+This is a research prototype. The main purpose of the project is to demonstrate the integration of UAV imagery, Android-based AI inference, drone telemetry and detection result visualization.
 
-The project is not intended for direct operational use without further testing, validation and professional review.
+The current model was trained on a limited dataset, so detection quality should be treated as experimental. The project is not intended for direct operational use without a larger dataset, further testing, validation and professional review.
+
+---
 
 ## License
 
 This project is licensed under the MIT License. See [LICENSE](LICENSE).
-
-## Author
-
-Nick Startsev
-
-GitHub: [@NickStS](https://github.com/NickStS)  
-Portfolio: [nicksts.github.io/my-resume](https://nicksts.github.io/my-resume/)
