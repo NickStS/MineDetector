@@ -12,7 +12,8 @@ The project was developed as a bachelor thesis project in Software Engineering. 
 
 ## Demo
 
-https://github.com/user-attachments/assets/0ae0caf1-5a76-499f-8ab6-bfbf725829f8
+
+https://github.com/user-attachments/assets/7b605cb4-6801-45d2-a252-406c67a5c6c7
 
 
 
